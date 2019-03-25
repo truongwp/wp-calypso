@@ -14,6 +14,7 @@ import Main from 'components/main';
 import GetAppsIllustration from './illustration.jsx';
 import DesktopDownloadCard from './desktop-download-card.jsx';
 import MobileDownloadCard from './mobile-download-card.jsx';
+import MobileMagicLinkCard from './mobile-magic-link-card.jsx';
 import PageViewTracker from 'lib/analytics/page-view-tracker';
 import config from 'config';
 
@@ -24,6 +25,7 @@ export const GetApps = () => {
 			<MeSidebarNavigation />
 			<GetAppsIllustration />
 			<MobileDownloadCard />
+			<MobileMagicLinkCard />
 			{ ! config( 'env_id' ).startsWith( 'desktop' ) && <DesktopDownloadCard /> }
 		</Main>
 	);

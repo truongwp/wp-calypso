@@ -1401,11 +1401,12 @@ Undocumented.prototype.requestMagicLoginEmail = function( data, fn ) {
 
 	data.locale = getLocaleSlug();
 	data.lang_id = getLanguage( data.locale ).value;
+	var apiVersion = data.apiVersion ? data.apiVersion : '1.2';
 
 	return this.wpcom.req.post(
 		'/auth/send-login-email',
 		{
-			apiVersion: '1.2',
+			apiVersion: apiVersion,
 		},
 		data,
 		fn
