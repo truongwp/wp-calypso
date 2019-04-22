@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { find, flowRight, partialRight, pick, overSome } from 'lodash';
+import { find, flowRight, partialRight, pick } from 'lodash';
 
 /**
  * Internal dependencies
@@ -23,15 +23,8 @@ import FormTextInput from 'components/forms/form-text-input';
 import FormTextValidation from 'components/forms/form-input-validation';
 import FormAnalyticsStores from './form-analytics-stores';
 import JetpackModuleToggle from 'my-sites/site-settings/jetpack-module-toggle';
-import {
-	isBusiness,
-	isEnterprise,
-	isJetpackBusiness,
-	isJetpackPremium,
-	isVipPlan,
-	isEcommerce,
-} from 'lib/products-values';
-import { isJetpackSite } from 'state/sites/selectors';
+import { isFreeJetpackPlan } from 'lib/products-values';
+import { isJetpackSite, isCurrentPlanPaid } from 'state/sites/selectors';
 import isJetpackModuleActive from 'state/selectors/is-jetpack-module-active';
 import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
 import {
@@ -45,13 +38,6 @@ import QueryJetpackModules from 'components/data/query-jetpack-modules';
 import SettingsSectionHeader from 'my-sites/site-settings/settings-section-header';
 
 const validateGoogleAnalyticsCode = code => ! code || code.match( /^UA-\d+-\d+$/i );
-const hasBusinessPlan = overSome(
-	isBusiness,
-	isEcommerce,
-	isEnterprise,
-	isJetpackBusiness,
-	isVipPlan
-);
 
 export class GoogleAnalyticsForm extends Component {
 	state = {
@@ -274,7 +260,7 @@ const mapStateToProps = state => {
 	const site = getSelectedSite( state );
 	const siteId = getSelectedSiteId( state );
 	const isGoogleAnalyticsEligible =
-		site && site.plan && ( hasBusinessPlan( site.plan ) || isJetpackPremium( site.plan ) );
+		site && site.plan && ( isCurrentPlanPaid( state, siteId ) || isFreeJetpackPlan( site.plan ) );
 	const jetpackModuleActive = isJetpackModuleActive( state, siteId, 'google-analytics' );
 	const siteIsJetpack = isJetpackSite( state, siteId );
 	const googleAnalyticsEnabled = site && ( ! siteIsJetpack || jetpackModuleActive );
