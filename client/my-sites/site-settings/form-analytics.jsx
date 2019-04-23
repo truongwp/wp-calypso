@@ -23,7 +23,6 @@ import FormTextInput from 'components/forms/form-text-input';
 import FormTextValidation from 'components/forms/form-input-validation';
 import FormAnalyticsStores from './form-analytics-stores';
 import JetpackModuleToggle from 'my-sites/site-settings/jetpack-module-toggle';
-import { isFreeJetpackPlan } from 'lib/products-values';
 import { isJetpackSite, isCurrentPlanPaid } from 'state/sites/selectors';
 import isJetpackModuleActive from 'state/selectors/is-jetpack-module-active';
 import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
@@ -259,8 +258,7 @@ export class GoogleAnalyticsForm extends Component {
 const mapStateToProps = state => {
 	const site = getSelectedSite( state );
 	const siteId = getSelectedSiteId( state );
-	const isGoogleAnalyticsEligible =
-		site && site.plan && ( isCurrentPlanPaid( state, siteId ) || isFreeJetpackPlan( site.plan ) );
+	const isGoogleAnalyticsEligible = site && site.plan && isCurrentPlanPaid( state, siteId );
 	const jetpackModuleActive = isJetpackModuleActive( state, siteId, 'google-analytics' );
 	const siteIsJetpack = isJetpackSite( state, siteId );
 	const googleAnalyticsEnabled = site && ( ! siteIsJetpack || jetpackModuleActive );
