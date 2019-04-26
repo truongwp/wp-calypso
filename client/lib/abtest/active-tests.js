@@ -182,4 +182,13 @@ export default {
 		defaultVariation: 'control',
 		allowExistingUsers: true,
 	},
+	domainSelectButtonCopy: {
+		datestamp: '20190426',
+		variations: {
+			select: 50,
+			purchase: 50,
+		},
+		defaultVariation: 'select',
+		allowExistingUsers: true,
+	},
 };
