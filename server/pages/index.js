@@ -310,7 +310,7 @@ function getDefaultContext( request ) {
 		isDebug,
 		badge: false,
 		lang,
-		entrypoint: getFilesForEntrypoint( target, 'build' ),
+		entrypoint: getFilesForEntrypoint( target, 'entry-main' ),
 		manifest: getAssets( target ).manifests.manifest,
 		faviconURL: config( 'favicon_url' ),
 		isFluidWidth: !! config.isEnabled( 'fluid-width' ),
@@ -762,7 +762,7 @@ module.exports = function() {
 
 		const pageHtml = renderJsx( 'domains-landing', {
 			...ctx,
-			entrypoint: getFilesForEntrypoint( target, 'domainsLanding' ),
+			entrypoint: getFilesForEntrypoint( target, 'entry-domains-landing' ),
 		} );
 		res.send( pageHtml );
 	} );
@@ -778,7 +778,7 @@ module.exports = function() {
 
 		const target = getBuildTargetFromRequest( req );
 
-		ctx.entrypoint = getFilesForEntrypoint( target, 'signup' );
+		ctx.entrypoint = getFilesForEntrypoint( target, 'entry-signup' );
 
 		const pageHtml = renderJsx( 'signup', ctx );
 		res.send( pageHtml );
