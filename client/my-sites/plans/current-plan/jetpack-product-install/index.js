@@ -14,14 +14,14 @@ import getJetpackProductInstallStatus from 'state/selectors/get-jetpack-product-
 import Interval, { EVERY_SECOND, EVERY_FIVE_SECONDS } from 'lib/interval';
 import Notice from 'components/notice';
 import NoticeAction from 'components/notice/notice-action';
-import QueryPluginKeys from 'components/data/query-plugin-keys';
 import { JETPACK_CONTACT_SUPPORT } from 'lib/url/support';
-import { getPluginKeys } from 'state/plugins/premium/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import {
 	requestJetpackProductInstallStatus,
 	startJetpackProductInstall,
 } from 'state/jetpack-product-install/actions';
+import { getHttpData, requestHttpData } from 'state/data-layer/http-data';
+import { http } from 'state/data-layer/wpcom-http/actions';
 
 /**
  * Module variables
@@ -52,6 +52,8 @@ const PLUGINS = [ 'akismet', 'vaultpress' ];
  */
 const MAX_RETRIES = 3;
 
+const dataKeyPluginData = siteId => `plugin-keys:${ siteId }`;
+
 export class JetpackProductInstall extends Component {
 	state = {
 		startedInstallation: false,
@@ -60,12 +62,32 @@ export class JetpackProductInstall extends Component {
 	retries = 0;
 
 	componentDidMount() {
+		this.fetchPluginKeys();
 		this.requestInstallationStatus();
 		this.maybeStartInstall();
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate( prevProps ) {
+		if ( prevProps.siteId !== this.props.siteId ) {
+			this.fetchPluginKeys();
+		}
 		this.maybeStartInstall();
+	}
+
+	fetchPluginKeys() {
+		this.props.siteId &&
+			requestHttpData(
+				dataKeyPluginData( this.props.siteId ),
+				http( {
+					method: 'GET',
+					path: `/jetpack-blogs/${ this.props.siteId }/keys`,
+					apiVersion: '1.1',
+				} ),
+				{
+					freshness: 10,
+					fromApi: () => data => [ [ dataKeyPluginData( this.props.siteId ), data.keys ] ],
+				}
+			);
 	}
 
 	/**
@@ -186,7 +208,7 @@ export class JetpackProductInstall extends Component {
 	};
 
 	render() {
-		const { progressComplete, siteId, translate } = this.props;
+		const { progressComplete, translate } = this.props;
 		/**
 		 * Usually, we'll wait for 1 second before requesting a new installation status,
 		 * but if we're retrying in the case of a recoverable error, we're increasing the timeout
@@ -196,8 +218,6 @@ export class JetpackProductInstall extends Component {
 
 		return (
 			<Fragment>
-				<QueryPluginKeys siteId={ siteId } />
-
 				{ ! this.shouldRefetchInstallationStatus() && this.installationHasRecoverableErrors() && (
 					<Notice
 						status="is-error"
@@ -225,7 +245,7 @@ export default connect(
 
 		return {
 			siteId,
-			pluginKeys: getPluginKeys( state, siteId ),
+			pluginKeys: siteId ? getHttpData( dataKeyPluginData( siteId ) ).data : null,
 			progressComplete: getJetpackProductInstallProgress( state, siteId ),
 			status: getJetpackProductInstallStatus( state, siteId ),
 		};
