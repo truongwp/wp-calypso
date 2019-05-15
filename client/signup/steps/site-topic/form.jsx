@@ -78,6 +78,7 @@ class SiteTopicForm extends Component {
 				<form onSubmit={ this.onSubmit }>
 					<FormFieldset>
 						<SiteVerticalsSuggestionSearch
+							aria-label={ this.props.translate( 'What does your business do?' ) }
 							onChange={ this.onSiteTopicChange }
 							showPopular={ true }
 							searchValue={ siteTopic }
