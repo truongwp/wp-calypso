@@ -961,6 +961,14 @@
 			"wpLocale": "zh_TW",
 			"popular": 14,
 			"territories": [ "030" ]
+		},
+		{
+			"value": 486,
+			"langSlug": "skr",
+			"name": "Saraiki",
+			"rtl": true,
+			"wpLocale": "skr",
+			"territories": [ "034" ]
 		}
 	],
 	"readerFollowingSource": "calypso",
