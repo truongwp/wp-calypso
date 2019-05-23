@@ -45,6 +45,7 @@ import React from 'react';
  */
 import { PlansFeaturesMain } from '../index';
 import {
+	GROUP_WPCOM,
 	PLAN_FREE,
 	PLAN_BUSINESS_MONTHLY,
 	PLAN_BUSINESS,
@@ -64,6 +65,9 @@ import {
 	PLAN_JETPACK_PREMIUM_MONTHLY,
 	PLAN_JETPACK_BUSINESS,
 	PLAN_JETPACK_BUSINESS_MONTHLY,
+	TYPE_BUSINESS,
+	TYPE_PERSONAL,
+	TYPE_PREMIUM,
 } from 'lib/plans/constants';
 
 const props = {
@@ -275,5 +279,38 @@ describe( 'PlansFeaturesMain.getPlansForPlanFeatures() with tabs', () => {
 		expect(
 			comp.find( 'SegmentedControlItem[path="?customerType=personal"]' ).props().selected
 		).toBe( false );
+	} );
+
+	test( 'Should highlight proper popular plan for blog site type', () => {
+		const instance = new PlansFeaturesMain( {
+			siteType: 'blog',
+		} );
+		const comp = shallow( instance.render() );
+		expect( comp.find( 'PlanFeatures' ).props().popularPlanSpec ).toEqual( {
+			type: TYPE_PERSONAL,
+			group: GROUP_WPCOM,
+		} );
+	} );
+
+	test( 'Should highlight proper popular plan for business site type', () => {
+		const instance = new PlansFeaturesMain( {
+			siteType: 'professional',
+		} );
+		const comp = shallow( instance.render() );
+		expect( comp.find( 'PlanFeatures' ).props().popularPlanSpec ).toEqual( {
+			type: TYPE_PREMIUM,
+			group: GROUP_WPCOM,
+		} );
+	} );
+
+	test( 'Should highlight proper popular plan for professional site type', () => {
+		const instance = new PlansFeaturesMain( {
+			siteType: 'business',
+		} );
+		const comp = shallow( instance.render() );
+		expect( comp.find( 'PlanFeatures' ).props().popularPlanSpec ).toEqual( {
+			type: TYPE_BUSINESS,
+			group: GROUP_WPCOM,
+		} );
 	} );
 } );
