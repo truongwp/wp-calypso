@@ -22,7 +22,6 @@ import { getSelectedSite, getSelectedSiteId, getSelectedSiteSlug } from 'state/u
 import QueryProductsList from 'components/data/query-products-list';
 import { getProductsList } from 'state/products-list/selectors';
 import TrademarkClaimsNotice from 'components/domains/trademark-claims-notice';
-import { domainAvailability } from 'lib/domains/constants';
 
 export class TransferDomain extends Component {
 	static propTypes = {
@@ -30,6 +29,7 @@ export class TransferDomain extends Component {
 		query: PropTypes.string,
 		cart: PropTypes.object.isRequired,
 		domainsWithPlansOnly: PropTypes.bool.isRequired,
+		isDomainTransferrable: PropTypes.bool,
 		isSiteUpgradeable: PropTypes.bool,
 		productsList: PropTypes.object.isRequired,
 		selectedSite: PropTypes.object,
@@ -151,8 +151,6 @@ export class TransferDomain extends Component {
 
 		const { errorMessage } = this.state;
 
-		const forcePrecheck = this.props.lastDomainStatus === domainAvailability.TRANSFERRABLE;
-
 		return (
 			<span>
 				<QueryProductsList />
@@ -168,7 +166,7 @@ export class TransferDomain extends Component {
 					onRegisterDomain={ this.handleRegisterDomain }
 					onTransferDomain={ this.handleTransferDomain }
 					analyticsSection="domains"
-					forcePrecheck={ forcePrecheck }
+					forcePrecheck={ this.props.isDomainTransferrable }
 				/>
 			</span>
 		);
