@@ -20,7 +20,12 @@ import RegisterDomainStep from 'components/domains/register-domain-step';
 import SignupActions from 'lib/signup/actions';
 import { getStepUrl } from 'signup/utils';
 import StepWrapper from 'signup/step-wrapper';
-import { cartItems } from 'lib/cart-values';
+import {
+	domainRegistration,
+	themeItem,
+	domainMapping,
+	domainTransfer,
+} from 'lib/cart-values/cart-items';
 import { DOMAINS_WITH_PLANS_ONLY } from 'state/current-user/constants';
 import { getSurveyVertical } from 'state/signup/steps/survey/selectors.js';
 import { getUsernameSuggestion } from 'lib/signup/step-actions';
@@ -114,7 +119,7 @@ class DomainsStep extends React.Component {
 		) {
 			this.skipRender = true;
 			const productSlug = getDomainProductSlug( domain );
-			const domainItem = cartItems.domainRegistration( { productSlug, domain } );
+			const domainItem = domainRegistration( { productSlug, domain } );
 
 			SignupActions.submitSignupStep(
 				{
@@ -196,11 +201,9 @@ class DomainsStep extends React.Component {
 	getThemeArgs = () => {
 		const themeSlug = this.getThemeSlug(),
 			themeSlugWithRepo = this.getThemeSlugWithRepo( themeSlug ),
-			themeItem = this.isPurchasingTheme()
-				? cartItems.themeItem( themeSlug, 'signup-with-theme' )
-				: undefined;
+			theme = this.isPurchasingTheme() ? themeItem( themeSlug, 'signup-with-theme' ) : undefined;
 
-		return { themeSlug, themeSlugWithRepo, themeItem };
+		return { themeSlug, themeSlugWithRepo, theme };
 	};
 
 	getThemeSlugWithRepo = themeSlug => {
@@ -224,7 +227,7 @@ class DomainsStep extends React.Component {
 				? suggestion.domain_name
 				: suggestion.domain_name.replace( '.wordpress.com', '' ),
 			domainItem = isPurchasingItem
-				? cartItems.domainRegistration( {
+				? domainRegistration( {
 						domain: suggestion.domain_name,
 						productSlug: suggestion.product_slug,
 				  } )
@@ -255,7 +258,7 @@ class DomainsStep extends React.Component {
 	};
 
 	handleAddMapping = ( sectionName, domain, state ) => {
-		const domainItem = cartItems.domainMapping( { domain } );
+		const domainItem = domainMapping( { domain } );
 		const isPurchasingItem = true;
 
 		this.props.recordAddDomainButtonClickInMapDomain( domain, this.getAnalyticsSection() );
@@ -279,7 +282,7 @@ class DomainsStep extends React.Component {
 	};
 
 	handleAddTransfer = ( domain, authCode ) => {
-		const domainItem = cartItems.domainTransfer( {
+		const domainItem = domainTransfer( {
 			domain,
 			extra: {
 				auth_code: authCode,

@@ -16,7 +16,12 @@ import { get } from 'lodash';
  */
 import Button from 'components/button';
 import CartAd from './cart-ad';
-import { cartItems } from 'lib/cart-values';
+import {
+	getDomainRegistrations,
+	premiumPlan,
+	hasRenewalItem,
+	hasDomainCredit,
+} from 'lib/cart-values/cart-items';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import isDomainOnlySite from 'state/selectors/is-domain-only-site';
 import { recordTracksEvent } from 'state/analytics/actions';
@@ -30,30 +35,30 @@ export class CartPlanAd extends Component {
 			event.preventDefault();
 		}
 
-		const domainRegistrations = cartItems.getDomainRegistrations( this.props.cart );
+		const domainRegistrations = getDomainRegistrations( this.props.cart );
 		const domainToBundle = get( domainRegistrations, '[0].meta', '' );
 
 		this.props.recordTracksEvent( 'calypso_banner_cta_click', {
 			cta_name: 'cart_domain_to_plan_upsell',
 		} );
 
-		addItem( cartItems.premiumPlan( PLAN_PREMIUM, { domainToBundle } ) );
+		addItem( premiumPlan( PLAN_PREMIUM, { domainToBundle } ) );
 		page( '/checkout/' + this.props.selectedSite.slug );
 	};
 
 	shouldDisplayAd = () => {
 		const { cart, isDomainOnly, selectedSite } = this.props;
-		const domainRegistrations = cartItems.getDomainRegistrations( cart );
+		const domainRegistrations = getDomainRegistrations( cart );
 		const isDomainPremium =
 			domainRegistrations.length === 1 && get( domainRegistrations[ 0 ], 'extra.premium', false );
-		const hasRenewalItem = cartItems.hasRenewalItem( cart );
+		const hasRenewal = hasRenewalItem( cart );
 
 		return (
 			! isDomainOnly &&
-			! hasRenewalItem &&
+			! hasRenewal &&
 			cart.hasLoadedFromServer &&
 			! cart.hasPendingServerUpdates &&
-			! cartItems.hasDomainCredit( cart ) &&
+			! hasDomainCredit( cart ) &&
 			domainRegistrations.length === 1 &&
 			! isDomainPremium &&
 			selectedSite &&
