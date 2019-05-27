@@ -114,6 +114,8 @@ export class Checkout extends React.Component {
 
 		if ( this.props.cart.hasLoadedFromServer && this.props.product ) {
 			this.addProductToCart();
+		} else if ( this.props.couponCode ) {
+			applyCoupon( this.props.couponCode );
 		}
 
 		window.scrollTo( 0, 0 );
