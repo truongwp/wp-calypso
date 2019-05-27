@@ -22,6 +22,7 @@ import CheckoutPendingComponent from './checkout-thank-you/pending';
 import CheckoutThankYouComponent from './checkout-thank-you';
 import ConciergeSessionNudge from './concierge-session-nudge';
 import ConciergeQuickstartSession from './concierge-quickstart-session';
+import PlanUpgradenNudge from './plan-upgrade-nudge';
 import { isGSuiteRestricted } from 'lib/gsuite';
 import FormattedHeader from 'components/formatted-header';
 import { abtest } from 'lib/abtest';
@@ -212,6 +213,26 @@ export function conciergeQuickstartSession( context, next ) {
 				receiptId={ Number( receiptId ) }
 				selectedSiteId={ selectedSite.ID }
 			/>
+		</CartData>
+	);
+
+	next();
+}
+
+export function planUpgradeNudge( context, next ) {
+	const { receiptId } = context.params;
+	context.store.dispatch( setSection( { name: 'plan-upgrade-nudge' }, { hasSidebar: false } ) );
+
+	const state = context.store.getState();
+	const selectedSite = getSelectedSite( state );
+
+	if ( ! selectedSite ) {
+		return null;
+	}
+
+	context.primary = (
+		<CartData>
+			<PlanUpgradenNudge receiptId={ Number( receiptId ) } selectedSiteId={ selectedSite.ID } />
 		</CartData>
 	);
 

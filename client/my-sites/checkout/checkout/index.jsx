@@ -383,6 +383,10 @@ export class Checkout extends React.Component {
 			return '/checkout/thank-you/features';
 		}
 
+		if ( cartItems.hasPersonalPlan( cart ) ) {
+			return `/checkout/${ selectedSiteSlug }/add-plan-upgrade/${ receiptId }`;
+		}
+
 		if ( this.props.isNewlyCreatedSite && receipt && isEmpty( receipt.failed_purchases ) ) {
 			const siteDesignType = get( selectedSite, 'options.design_type' );
 			const hasGoogleAppsInCart = cartItems.hasGoogleApps( cart );

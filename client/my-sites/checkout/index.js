@@ -15,6 +15,7 @@ import {
 	sitelessCheckout,
 	conciergeSessionNudge,
 	conciergeQuickstartSession,
+	planUpgradeNudge,
 } from './controller';
 import SiftScience from 'lib/siftscience';
 import { makeLayout, render as clientRender } from 'controller';
@@ -139,4 +140,12 @@ export default function() {
 
 	// Visiting /checkout without a plan or product should be redirected to /plans
 	page( '/checkout', '/plans' );
+
+	page(
+		'/checkout/:site/add-plan-upgrade/:receiptId?',
+		siteSelection,
+		planUpgradeNudge,
+		makeLayout,
+		clientRender
+	);
 }
