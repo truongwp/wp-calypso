@@ -47,7 +47,7 @@ import * as oauthToken from 'lib/oauth-token';
 import { isDomainRegistration, isDomainTransfer, isDomainMapping } from 'lib/products-values';
 import SignupActions from 'lib/signup/actions';
 import SignupFlowController from 'lib/signup/flow-controller';
-import { disableCart } from 'lib/upgrades/actions';
+import { disableCart, saveCouponQueryArgument } from 'lib/upgrades/actions';
 
 // State actions and selectors
 import { loadTrackingTool } from 'state/analytics/actions';
@@ -202,7 +202,7 @@ class Signup extends React.Component {
 
 	componentDidMount() {
 		debug( 'Signup component mounted' );
-		this.saveCouponQueryArgument();
+		saveCouponQueryArgument();
 		this.startTrackingForBusinessSite();
 		this.recordSignupStart();
 		this.preloadNextStep();
@@ -225,35 +225,6 @@ class Signup extends React.Component {
 		const filteredDestination = getDestination( destination, dependencies, this.props.flowName );
 		return this.handleFlowComplete( dependencies, filteredDestination );
 	};
-
-	saveCouponQueryArgument() {
-		// read coupon query argument, return early if there is none
-		const parsedUrl = urlParseAmpCompatible( location.href );
-		const couponCode = parsedUrl.query.coupon;
-		if ( ! couponCode ) {
-			return;
-		}
-
-		// read coupon list from localStorage, create new if it's not there yet, refresh existing
-		const couponsJson = localStorage.getItem( 'marketing-coupons' );
-		const coupons = JSON.parse( couponsJson ) || {};
-		const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
-		const now = Date.now();
-		debug( 'Found coupons in localStorage: ', coupons );
-
-		coupons[ couponCode ] = now;
-
-		// delete coupons if they're older than a week
-		Object.keys( coupons ).forEach( key => {
-			if ( now > coupons[ key ] + ONE_WEEK_MILLISECONDS ) {
-				delete coupons[ key ];
-			}
-		} );
-
-		// write remembered coupons back to localStorage
-		debug( 'Storing coupons in localStorage: ', coupons );
-		localStorage.setItem( 'marketing-coupons', JSON.stringify( coupons ) );
-	}
 
 	startTrackingForBusinessSite() {
 		const siteType = get( this.props.signupDependencies, 'siteType' );
