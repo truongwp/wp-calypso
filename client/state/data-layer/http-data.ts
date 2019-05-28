@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { Reducer, AnyAction, Dispatch, Action } from 'redux';
+import { Reducer, AnyAction, Dispatch, Action, StoreEnhancerStoreCreator } from 'redux';
 
 /**
  * Internal dependencies
@@ -58,7 +58,7 @@ export const getHttpData = ( id: DataId ) => httpData.get( id ) || empty;
 export const subscribe = ( f: Function ): ( () => void ) => {
 	listeners.add( f );
 
-	return () => listeners.delete( f );
+	return () => void listeners.delete( f );
 };
 
 export const updateData = ( id: DataId, state: DataState, data: any ) => {
@@ -196,7 +196,9 @@ interface HttpDataAction extends Action< typeof HTTP_DATA_REQUEST > {
 let dispatch: Dispatch< AnyAction >;
 let dispatchQueue: HttpDataAction[] = [];
 
-export const enhancer = next => ( ...args ) => {
+export const enhancer = ( next: StoreEnhancerStoreCreator ) => (
+	...args: Parameters< StoreEnhancerStoreCreator >
+) => {
 	const store = next( ...args );
 
 	dispatch = store.dispatch;
@@ -318,7 +320,7 @@ export const waitForData = < T extends Query >(
 			if ( allDone ) {
 				clearTimeout( timer );
 				unsubscribe();
-				allBad ? reject( values ) : resolve( values );
+				allBad ? reject( values ) : resolve( values as Results< T > );
 			}
 		};
 
@@ -335,7 +337,7 @@ export const waitForData = < T extends Query >(
 		listener();
 	} );
 
-if ( 'object' === typeof window && window.app && window.app.isDebug ) {
+if ( 'object' === typeof window && window.app && window.app.isDebug && window ) {
 	window.getHttpData = getHttpData;
 	window.httpData = httpData;
 	window.requestHttpData = requestHttpData;
