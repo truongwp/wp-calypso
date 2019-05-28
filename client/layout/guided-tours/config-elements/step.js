@@ -165,8 +165,6 @@ export default class Step extends Component {
 	safeSetState( state ) {
 		if ( this.mounted ) {
 			this.setState( state );
-		} else {
-			this.state = { ...this.state, ...state };
 		}
 	}
 
