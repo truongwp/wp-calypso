@@ -160,16 +160,8 @@ export default class Step extends Component {
 		}
 
 		return new Promise( resolve => {
-			if ( document.querySelector( props.target ) ) {
-				return resolve();
-			}
-
-			const waitForElement = () => {
-				if ( document.querySelector( props.target ) ) {
-					return resolve();
-				}
-				setTimeout( waitForElement, 125 );
-			};
+			const waitForElement = () =>
+				document.querySelector( props.target ) ? resolve() : setTimeout( waitForElement, 125 );
 
 			waitForElement();
 		} );
