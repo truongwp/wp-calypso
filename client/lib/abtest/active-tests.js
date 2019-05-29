@@ -183,4 +183,13 @@ export default {
 		},
 		defaultVariation: 'control',
 	},
+	showPlanUpsellNudge: {
+		datestamp: '20190529',
+		variations: {
+			variantShowNudge: 50,
+			control: 50,
+		},
+		defaultVariation: 'control',
+		allowExistingUsers: true,
+	},
 };
