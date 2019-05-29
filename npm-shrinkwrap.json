@@ -38,6 +38,8 @@
 				"caniuse-api": "3.0.0",
 				"css-loader": "2.1.1",
 				"duplicate-package-checker-webpack-plugin": "3.0.0",
+				"enzyme": "3.9.0",
+				"enzyme-adapter-react-16": "1.12.1",
 				"file-loader": "3.0.1",
 				"mini-css-extract-plugin-with-rtl": "github:Automattic/mini-css-extract-plugin-with-rtl",
 				"node-sass": "4.11.0",
@@ -21828,9 +21830,9 @@
 			"integrity": "sha1-9PrTM0R7wLB9TcjpIJ2POaisd+g="
 		},
 		"tinymce": {
-			"version": "4.8.5",
-			"resolved": "https://registry.npmjs.org/tinymce/-/tinymce-4.8.5.tgz",
-			"integrity": "sha512-1V6+PxP5Kp8H/Kuf+EOe6vyrtj1Dlj98q33DgiKGoGPTmbcQaVZWiT+lhqj8ICXKVLV3YxAieOJyJXai4SLHQg=="
+			"version": "5.0.6",
+			"resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.0.6.tgz",
+			"integrity": "sha512-9/pcrO8awssCrbfSeNzlt2talFO4ZBCxiwWFLTrSOy5kJI4gXKGKHsZzstoyt7cbwbT1cUjLlUiDqW8IgmL6JA=="
 		},
 		"title-case": {
 			"version": "2.1.1",
