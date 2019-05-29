@@ -88,14 +88,6 @@ export default {
 		},
 		defaultVariation: 'originalFlavor',
 	},
-	gSuitePostCheckoutNotice: {
-		datestamp: '20190211',
-		variations: {
-			original: 50,
-			enhanced: 50,
-		},
-		defaultVariation: 'original',
-	},
 	pluginFeaturedTitle: {
 		datestamp: '20190220',
 		variations: {
@@ -174,6 +166,16 @@ export default {
 		},
 		defaultVariation: 'control',
 	},
+	showApplePay: {
+		datestamp: '20190529',
+		variations: {
+			hide: 50,
+			show: 50,
+		},
+		defaultVariation: 'hide',
+		allowExistingUsers: true,
+		localeTargets: 'any',
+	},
 	popularPlanBy: {
 		datestamp: '20190529',
 		variations: {
@@ -181,5 +183,5 @@ export default {
 			customerType: 50,
 		},
 		defaultVariation: 'siteType',
-	},
+  },
 };
