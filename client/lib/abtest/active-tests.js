@@ -174,4 +174,12 @@ export default {
 		},
 		defaultVariation: 'control',
 	},
+	popularPlanBy: {
+		datestamp: '20190529',
+		variations: {
+			siteType: 50,
+			customerType: 50,
+		},
+		defaultVariation: 'siteType',
+	},
 };
