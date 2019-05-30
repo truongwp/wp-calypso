@@ -232,9 +232,10 @@ export function planUpgradeNudge( context, next ) {
 
 	context.primary = (
 		<CartData>
-			<PlanUpgradenNudge selectedSiteId={ selectedSite.ID } product={ product } />
+			<Checkout>
+				<PlanUpgradenNudge selectedSiteId={ selectedSite.ID } product={ product } />
+			</Checkout>
 		</CartData>
 	);
-
 	next();
 }

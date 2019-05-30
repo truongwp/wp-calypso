@@ -289,6 +289,11 @@ export class Checkout extends React.Component {
 
 	redirectIfEmptyCart() {
 		const { selectedSiteSlug, transaction } = this.props;
+
+		if ( ! transaction ) {
+			return true;
+		}
+
 		let redirectTo = '/plans/';
 
 		if ( ! this.state.previousCart && this.props.product ) {
@@ -372,10 +377,9 @@ export class Checkout extends React.Component {
 			cart,
 			selectedSite,
 			selectedSiteSlug,
-			transaction: {
-				step: { data: receipt },
-			},
+			transaction: { step: { data: receipt = null } = {} } = {},
 		} = this.props;
+
 		const domainReceiptId = get(
 			cartItems.getGoogleApps( cart ),
 			'[0].extra.receipt_for_domain',
@@ -518,9 +522,7 @@ export class Checkout extends React.Component {
 			isDomainOnly,
 			reduxStore,
 			selectedSiteId,
-			transaction: {
-				step: { data: receipt },
-			},
+			transaction: { step: { data: receipt = null } = {} } = {},
 			translate,
 		} = this.props;
 		const redirectPath = this.getCheckoutCompleteRedirectPath();
@@ -769,6 +771,14 @@ export class Checkout extends React.Component {
 			analyticsProps = { site: selectedSiteSlug };
 		} else {
 			analyticsPath = '/checkout/no-site';
+		}
+
+		if ( this.props.children ) {
+			return React.Children.map( this.props.children, child => {
+				return React.cloneElement( child, {
+					handleClickDecline: this.handleCheckoutCompleteRedirect,
+				} );
+			} );
 		}
 
 		/* eslint-disable wpcalypso/jsx-classname-namespace */
