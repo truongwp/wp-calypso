@@ -695,7 +695,7 @@ class SignupForm extends Component {
 	}
 
 	footerLink() {
-		const { flowName, translate } = this.props;
+		const { translate } = this.props;
 
 		if ( this.props.positionInFlow !== 0 ) {
 			return;
@@ -708,9 +708,7 @@ class SignupForm extends Component {
 		return (
 			<LoggedOutFormLinks>
 				<LoggedOutFormLinkItem href={ logInUrl }>
-					{ [ 'onboarding', 'onboarding-dev' ].includes( flowName )
-						? translate( 'Log in to create a site for your existing account.' )
-						: translate( 'Already have a WordPress.com account?' ) }
+					{ translate( 'Log in to create a site for your existing account.' ) }
 				</LoggedOutFormLinkItem>
 				{ this.props.oauth2Client && (
 					<LoggedOutFormBackLink

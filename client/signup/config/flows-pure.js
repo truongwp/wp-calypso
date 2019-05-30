@@ -94,17 +94,10 @@ export function generateFlows( {
 		},
 
 		main: {
-			steps: [ 'user', 'about', 'domains', 'plans' ],
-			destination: getChecklistDestination,
-			description: 'The current best performing flow in AB tests',
-			lastModified: '2019-04-30',
-		},
-
-		onboarding: {
 			steps: [ 'user', 'site-type', 'site-topic', 'site-title', 'domains', 'plans' ],
 			destination: getChecklistDestination,
-			description: 'The improved onboarding flow.',
-			lastModified: '2019-04-30',
+			description: 'The default onboarding flow.',
+			lastModified: '2019-05-30',
 		},
 
 		'onboarding-for-business': {
@@ -119,21 +112,6 @@ export function generateFlows( {
 			],
 			destination: getChecklistDestination,
 			description: 'The improved onboarding flow for business site types.',
-			lastModified: '2019-04-30',
-		},
-
-		'onboarding-dev': {
-			steps: [
-				'user',
-				'site-type',
-				'site-topic-with-preview',
-				'site-title-with-preview',
-				'site-style-with-preview',
-				'domains-with-preview',
-				'plans',
-			],
-			destination: getChecklistDestination,
-			description: 'A temporary flow for holding under-development steps',
 			lastModified: '2019-04-30',
 		},
 
